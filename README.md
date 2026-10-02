@@ -2,6 +2,8 @@
 
 > *"Find the decisions your business is quietly paying for."*
 
+**Live Production Deployment**: [https://pipeline-iq-production-903c.up.railway.app](https://pipeline-iq-production-903c.up.railway.app)
+
 **Pipeline IQ** is an Agentic Decision-Intelligence System that detects **Decision Debt** inside an enterprise's business pipeline.
 
 Unlike generic CRM dashboards or lead-scoring chatbots, Pipeline IQ does not merely notify you that a customer has not been contacted. It calculates:
@@ -12,6 +14,7 @@ Unlike generic CRM dashboards or lead-scoring chatbots, Pipeline IQ does not mer
 - **WHO** owns the decision and **WHEN** they must act
 - **ESCALATION** rules if the deadline passes
 - **AUDITING** whether predictions were accurate against real-world verified outcomes
+
 
 ---
 
