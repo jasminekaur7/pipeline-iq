@@ -82,15 +82,15 @@ export const DecisionContractModal: React.FC<DecisionContractModalProps> = ({
       aria-labelledby="contract-modal-title"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in"
     >
-      <div className="bg-slate-900 border border-slate-700/80 rounded-xl max-w-xl w-full shadow-2xl overflow-hidden flex flex-col">
+      <div className="bg-[#111726] border border-[#1E293B] rounded-xl max-w-xl w-full shadow-2xl overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div className="p-4 sm:p-5 border-b border-[#1E293B] flex items-center justify-between bg-[#0B0F17]">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+            <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400">
               <FileCheck2 className="w-5 h-5" />
             </div>
             <div>
-              <h2 id="contract-modal-title" className="text-base font-semibold text-white">
+              <h2 id="contract-modal-title" className="text-sm font-semibold text-white tracking-tight">
                 Establish Decision Contract
               </h2>
               <p className="text-xs text-slate-400">
@@ -101,7 +101,7 @@ export const DecisionContractModal: React.FC<DecisionContractModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+            className="p-1 text-slate-400 hover:text-white rounded-lg hover:bg-[#1E293B] transition-colors"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -120,7 +120,7 @@ export const DecisionContractModal: React.FC<DecisionContractModalProps> = ({
               value={action}
               onChange={(e) => setAction(e.target.value)}
               placeholder="e.g. Schedule C-level alignment with CIO"
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full px-3 py-2 bg-[#0B0F17] border border-[#1E293B] rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-xs"
             />
           </div>
 
@@ -132,7 +132,7 @@ export const DecisionContractModal: React.FC<DecisionContractModalProps> = ({
               <select
                 value={owner}
                 onChange={(e) => setOwner(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                className="w-full px-3 py-2 bg-[#0B0F17] border border-[#1E293B] rounded-lg text-slate-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-xs"
               >
                 <option value="Sarah Chen">Sarah Chen (Enterprise Rep)</option>
                 <option value="Marcus Vance">Marcus Vance (Strategic Accounts)</option>
@@ -149,7 +149,7 @@ export const DecisionContractModal: React.FC<DecisionContractModalProps> = ({
               <select
                 value={deadlineDays}
                 onChange={(e) => setDeadlineDays(Number(e.target.value))}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                className="w-full px-3 py-2 bg-[#0B0F17] border border-[#1E293B] rounded-lg text-slate-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-xs"
               >
                 <option value={1}>1 Day (Emergency Response)</option>
                 <option value={2}>2 Days (High Urgency)</option>
@@ -170,7 +170,7 @@ export const DecisionContractModal: React.FC<DecisionContractModalProps> = ({
               value={escalationRule}
               onChange={(e) => setEscalationRule(e.target.value)}
               placeholder="e.g. Escalate to VP of Sales if deadline passes without logged interaction"
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full px-3 py-2 bg-[#0B0F17] border border-[#1E293B] rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-xs"
             />
           </div>
 
@@ -181,7 +181,7 @@ export const DecisionContractModal: React.FC<DecisionContractModalProps> = ({
               value={expectedImpact}
               onChange={(e) => setExpectedImpact(e.target.value)}
               placeholder="e.g. Reduce churn risk to <35% & secure annual expansion"
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full px-3 py-2 bg-[#0B0F17] border border-[#1E293B] rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-xs"
             />
           </div>
 
@@ -191,23 +191,23 @@ export const DecisionContractModal: React.FC<DecisionContractModalProps> = ({
               rows={2}
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 resize-none"
+              className="w-full px-3 py-2 bg-[#0B0F17] border border-[#1E293B] rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none text-xs"
             />
           </div>
 
           {/* Action buttons */}
-          <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-3">
+          <div className="pt-3 border-t border-[#1E293B] flex items-center justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition-colors"
+              className="px-3.5 py-1.5 rounded-lg bg-[#1E293B] hover:bg-slate-700 text-slate-300 font-medium transition-colors text-xs"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-slate-950 font-semibold flex items-center gap-1.5 transition-colors shadow-md shadow-emerald-950/40"
+              className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-medium flex items-center gap-1.5 transition-colors text-xs shadow-sm"
             >
               <span>{isSubmitting ? 'Establishing...' : 'Commit Decision Contract'}</span>
               <ArrowRight className="w-3.5 h-3.5" />

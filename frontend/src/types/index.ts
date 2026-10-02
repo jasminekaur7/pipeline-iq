@@ -127,6 +127,7 @@ export interface Prediction {
   id: string;
   account_id: string;
   risk_type: string;
+  prediction_type?: string;
   score: number;
   confidence: number;
   created_at: string;
@@ -264,6 +265,9 @@ export interface CalibrationBucket {
   predicted_count: number;
   actual_positive_count: number;
   accuracy_rate: number;
+  count?: number;
+  observed_rate?: number;
+  reliability_status?: string;
 }
 
 export interface SelfAuditSummary {
@@ -298,4 +302,5 @@ export interface CopilotQueryResponse {
     weight: number;
   }>;
   suggested_actions: string[];
+  relevant_account_id?: string;
 }

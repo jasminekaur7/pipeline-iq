@@ -3,9 +3,7 @@ import { api } from '../services/api';
 import { SelfAuditSummary, Prediction } from '../types';
 import { useToast } from '../context/ToastContext';
 import {
-  CheckCircle2, XCircle, AlertTriangle, ShieldCheck,
-  TrendingUp, Award, HelpCircle, ArrowUpRight, BarChart2,
-  PlusCircle, RefreshCw, X, Check, Filter
+  CheckCircle2, PlusCircle, X, Check, Database
 } from 'lucide-react';
 
 interface SelfAuditPageProps {
@@ -22,7 +20,7 @@ export const SelfAuditPage: React.FC<SelfAuditPageProps> = ({ onSelectAccount })
   // Form fields for recording outcome
   const [selectedPredictionId, setSelectedPredictionId] = useState<string>('');
   const [actualOutcome, setActualOutcome] = useState<string>('PREVENTED');
-  const [verificationSource, setVerificationSource] = useState<string>('Executive Customer Review');
+  const [verificationSource, setVerificationSource] = useState<string>('Executive Review');
   const [auditNotes, setAuditNotes] = useState<string>('Executive check-in executed, churn risk prevented.');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -94,223 +92,235 @@ export const SelfAuditPage: React.FC<SelfAuditPageProps> = ({ onSelectAccount })
 
   if (loading || !audit) {
     return (
-      <div className="p-8 max-w-7xl mx-auto space-y-6 animate-pulse">
-        <div className="h-8 bg-slate-800 rounded w-1/4"></div>
-        <div className="grid grid-cols-4 gap-4">
+      <div className="p-4 lg:p-6 max-w-7xl mx-auto space-y-5 animate-pulse">
+        <div className="h-6 bg-slate-800 rounded w-1/4"></div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-24 bg-slate-800/60 rounded-xl"></div>
+            <div key={i} className="h-24 bg-[#111726] rounded-md border border-slate-800"></div>
           ))}
         </div>
+        <div className="h-64 bg-[#111726] rounded-md border border-slate-800"></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 p-4 lg:p-8 max-w-7xl mx-auto">
+    <div className="space-y-5 p-4 lg:p-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="pb-2 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="pb-3 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl lg:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+          <h1 className="text-lg font-semibold tracking-tight text-white flex items-center gap-2">
             <span>Self-Audit &amp; Calibration Ledger</span>
-            <span className="text-xs font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              Honest Feedback Loop
+            <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+              Reliability Telemetry
             </span>
           </h1>
-          <p className="text-xs lg:text-sm text-slate-400 mt-1">
-            Tracking predicted pipeline risks against verified real-world outcomes to calculate calibration and prevent hallucination.
+          <p className="text-xs text-slate-400 mt-0.5">
+            Empirical calibration metrics comparing predictive risk scores against verified historical outcomes.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => handleOpenVerifyModal()}
-            className="px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm"
-          >
-            <PlusCircle className="w-3.5 h-3.5" />
-            <span>Record Actual Outcome</span>
-          </button>
+        <button
+          type="button"
+          onClick={() => handleOpenVerifyModal()}
+          className="px-3 py-1.5 rounded bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium inline-flex items-center gap-1.5 transition-colors shadow-sm self-start md:self-auto"
+        >
+          <PlusCircle className="w-3.5 h-3.5" />
+          <span>Record Actual Outcome</span>
+        </button>
+      </div>
+
+      {/* Dataset Label Banner */}
+      <div className="p-3 rounded-md bg-[#111726] border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
+        <div className="flex items-center gap-2 text-slate-300">
+          <Database className="w-4 h-4 text-blue-400 shrink-0" />
+          <span>
+            <strong className="text-white font-medium">Dataset Scope:</strong> Current metrics are calibrated on <strong>{audit.total_predictions} seeded historical prediction records</strong> to establish an initial performance baseline. Live operator verifications update this distribution in real-time.
+          </span>
         </div>
+        <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-700 shrink-0">
+          Demo Benchmark Data
+        </span>
       </div>
 
       {/* Top 4 Audit Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-        <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
-          <div className="text-xs text-slate-400 mb-1 flex items-center justify-between">
-            <span>Verified Predictions</span>
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="p-3.5 rounded-md bg-[#111726] border border-slate-800 border-l-2 border-l-blue-500">
+          <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+            Verified Predictions
           </div>
           <div className="text-2xl font-bold font-mono text-white">
-            {audit.verified_predictions} <span className="text-xs text-slate-500 font-sans">/ {audit.total_predictions}</span>
+            {audit.verified_predictions} <span className="text-xs text-slate-400 font-sans">/ {audit.total_predictions}</span>
           </div>
-          <div className="text-[11px] text-slate-500 mt-1">Historical outcomes recorded</div>
+          <div className="text-[10px] text-slate-500 mt-1">Ground-truth outcomes audited</div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
-          <div className="text-xs text-slate-400 mb-1 flex items-center justify-between">
-            <span>Calibration Accuracy</span>
-            <Award className="w-4 h-4 text-emerald-400" />
+        <div className="p-3.5 rounded-md bg-[#111726] border border-slate-800 border-l-2 border-l-emerald-500">
+          <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+            Overall Accuracy Rate
           </div>
           <div className="text-2xl font-bold font-mono text-emerald-400">
             {audit.overall_accuracy_rate}%
           </div>
-          <div className="text-[11px] text-slate-500 mt-1">{audit.correct_predictions} confirmed / {audit.incorrect_predictions} missed</div>
+          <div className="text-[10px] text-slate-500 mt-1">Correct risk predictions</div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
-          <div className="text-xs text-slate-400 mb-1 flex items-center justify-between">
-            <span>Brier Error Score</span>
-            <span className="text-[10px] font-mono text-slate-400">Lower = Better</span>
+        <div className="p-3.5 rounded-md bg-[#111726] border border-slate-800 border-l-2 border-l-blue-500">
+          <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+            Brier Calibration Score
           </div>
-          <div className="text-2xl font-bold font-mono text-slate-100">
-            {audit.brier_score}
+          <div className="text-2xl font-bold font-mono text-blue-400">
+            {audit.brier_score.toFixed(3)}
           </div>
-          <div className="text-[11px] text-emerald-400 mt-1">Grounded calibration (&lt; 0.20 benchmark)</div>
+          <div className="text-[10px] text-slate-500 mt-1">Target &le; 0.250 (lower is better)</div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
-          <div className="text-xs text-slate-400 mb-1 flex items-center justify-between">
-            <span>Error Breakdown</span>
-            <AlertTriangle className="w-4 h-4 text-amber-400" />
+        <div className="p-3.5 rounded-md bg-[#111726] border border-slate-800 border-l-2 border-l-amber-500">
+          <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+            False Alarm Rate
           </div>
-          <div className="text-lg font-bold font-mono text-slate-200 mt-1">
-            FP: <span className="text-amber-400">{audit.false_positives}</span> • FN: <span className="text-rose-400">{audit.false_negatives}</span>
+          <div className="text-2xl font-bold font-mono text-amber-400">
+            {audit.false_positives} FP <span className="text-xs text-slate-500 font-sans">/ {audit.false_negatives} FN</span>
           </div>
-          <div className="text-[11px] text-slate-500 mt-1">False Positives vs False Negatives</div>
+          <div className="text-[10px] text-slate-500 mt-1">False positives vs false negatives</div>
         </div>
       </div>
 
-      {/* Model Calibration Curve Buckets */}
-      <div className="p-5 rounded-xl bg-slate-900/60 border border-slate-800">
-        <div className="flex items-center justify-between mb-4">
+      {/* Confidence Calibration Bins Table */}
+      <div className="p-4 rounded-md bg-[#111726] border border-slate-800">
+        <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-800/80">
           <div>
-            <h2 className="font-semibold text-sm text-slate-100 flex items-center gap-2">
-              <BarChart2 className="w-4 h-4 text-emerald-400" />
-              <span>Confidence Calibration Bins</span>
+            <h2 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono">
+              Empirical Calibration Buckets
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Comparing model predicted probability band against empirical real-world outcome frequency.
+            <p className="text-[11px] text-slate-400 mt-0.5">
+              Testing reliability across probability intervals. A well-calibrated system aligns predicted probability with observed outcome frequency.
             </p>
           </div>
-          <span className="text-[11px] font-mono text-slate-400">
-            Empirical Reliability Curve
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-          {audit.calibration_buckets.map((b) => (
-            <div
-              key={b.bucket_range}
-              className="p-3.5 rounded-lg bg-slate-950 border border-slate-800 flex flex-col justify-between"
-            >
-              <div className="text-[10px] uppercase font-mono text-slate-400 mb-1">
-                Predicted Range: {b.bucket_range}
-              </div>
-              <div className="text-xl font-bold font-mono text-emerald-400 my-1">
-                {b.accuracy_rate}%
-              </div>
-              <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden my-1">
-                <div
-                  className="h-full bg-emerald-500 rounded-full"
-                  style={{ width: `${b.accuracy_rate}%` }}
-                />
-              </div>
-              <div className="text-[10px] text-slate-500 font-mono mt-1">
-                {b.actual_positive_count} of {b.predicted_count} verified
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Historical Prediction Audit Log */}
-      <div className="p-5 rounded-xl bg-slate-900/60 border border-slate-800">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="font-semibold text-sm text-slate-100">
-              Verifiable Prediction Outcome Log
-            </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Auditing system recommendations against factual outcomes to verify decision accuracy.
-            </p>
-          </div>
-          <span className="text-[11px] font-mono text-slate-400">
-            Showing {audit.recent_audits.length} Audited Predictions
+          <span className="text-[10px] font-mono text-slate-400">
+            5 Confidence Buckets
           </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-800 text-[11px] font-mono uppercase text-slate-400">
-                <th className="pb-3 font-medium">Account ID</th>
-                <th className="pb-3 font-medium">Risk Predicted</th>
-                <th className="pb-3 font-medium">Confidence</th>
-                <th className="pb-3 font-medium">Actual Outcome</th>
-                <th className="pb-3 font-medium">Audit Verification</th>
-                <th className="pb-3 font-medium">Audit Notes</th>
-                <th className="pb-3 font-medium text-right">Action</th>
+              <tr className="border-b border-slate-800 text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                <th className="pb-2 font-medium">Confidence Range</th>
+                <th className="pb-2 font-medium">Sample Count</th>
+                <th className="pb-2 font-medium">Observed Outcome Accuracy</th>
+                <th className="pb-2 font-medium">Calibration Reliability</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
-              {audit.recent_audits.map((pred) => {
-                const isMatch = pred.actual_outcome_match === true;
+            <tbody className="divide-y divide-slate-800/60 font-mono text-xs">
+              {audit.calibration_buckets.map((b, idx) => {
+                const count = b.predicted_count ?? b.count ?? 0;
+                const rate = b.accuracy_rate ?? b.observed_rate ?? 0;
+                const status = b.reliability_status || (rate >= 75 ? 'WELL_CALIBRATED' : rate >= 50 ? 'CALIBRATED' : 'MONITORING');
 
                 return (
-                  <tr
-                    key={pred.id}
-                    className="hover:bg-slate-800/40 transition-colors"
-                  >
-                    <td
-                      onClick={() => onSelectAccount(pred.account_id)}
-                      className="py-3 font-mono font-medium text-emerald-400 cursor-pointer flex items-center gap-1"
-                    >
-                      <span>{pred.account_id}</span>
-                      <ArrowUpRight className="w-3 h-3 text-slate-500" />
+                  <tr key={idx} className="hover:bg-slate-800/40 transition-colors">
+                    <td className="py-2.5 font-medium text-slate-200">{b.bucket_range}</td>
+                    <td className="py-2.5 text-slate-400">{count} cases</td>
+                    <td className="py-2.5 text-slate-200">
+                      <span className="font-semibold text-white">{rate}%</span>
                     </td>
-                    <td className="py-3">
-                      <span className="font-semibold text-slate-200">
-                        {pred.risk_type.replace('_', ' ')}
-                      </span>
-                      <div className="text-[10px] font-mono text-slate-400">
-                        Score: {pred.score.toFixed(0)}/100
-                      </div>
-                    </td>
-                    <td className="py-3 font-mono text-slate-300">
-                      {Math.round(pred.confidence * 100)}%
-                    </td>
-                    <td className="py-3 font-mono text-slate-200">
-                      <span className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px]">
-                        {pred.outcome || 'PENDING'}
-                      </span>
-                    </td>
-                    <td className="py-3">
+                    <td className="py-2.5">
                       <span
-                        className={`text-[10px] font-mono px-2 py-0.5 rounded border inline-flex items-center gap-1 ${
-                          isMatch
+                        className={`text-[10px] px-1.5 py-0.5 rounded border uppercase ${
+                          status === 'WELL_CALIBRATED'
                             ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                            : 'bg-rose-500/10 text-rose-400 border-rose-500/30'
+                            : status === 'OVERCONFIDENT'
+                            ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                            : 'bg-blue-500/10 text-blue-400 border-blue-500/30'
                         }`}
                       >
-                        {isMatch ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
-                        {isMatch ? 'Prediction Correct' : 'Prediction Missed'}
+                        {status.replace(/_/g, ' ')}
                       </span>
-                    </td>
-                    <td className="py-3 text-slate-400 text-[11px] max-w-xs">
-                      {pred.audit_notes || 'Verified against recorded pipeline telemetry'}
-                    </td>
-                    <td className="py-3 text-right">
-                      <button
-                        type="button"
-                        onClick={() => handleOpenVerifyModal(pred)}
-                        className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-medium transition-colors border border-slate-700"
-                      >
-                        Verify Outcome
-                      </button>
                     </td>
                   </tr>
                 );
               })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Recent Historical Prediction Records */}
+      <div className="p-4 rounded-md bg-[#111726] border border-slate-800">
+        <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-800/80">
+          <div>
+            <h2 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono">
+              Audited Outcome Records
+            </h2>
+            <p className="text-[11px] text-slate-400 mt-0.5">
+              Historical ledger of model predictions vs actual recorded customer decisions.
+            </p>
+          </div>
+          <span className="text-[10px] font-mono text-slate-400">
+            {audit.recent_audits.length} recorded
+          </span>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="border-b border-slate-800 text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                <th className="pb-2 font-medium">Account ID</th>
+                <th className="pb-2 font-medium">Predicted Risk Event</th>
+                <th className="pb-2 font-medium">Confidence</th>
+                <th className="pb-2 font-medium">Verified Outcome</th>
+                <th className="pb-2 font-medium">Match Result</th>
+                <th className="pb-2 font-medium text-right">Verification</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800/60 text-xs">
+              {audit.recent_audits.map((p) => (
+                <tr key={p.id} className="hover:bg-slate-800/40 transition-colors">
+                  <td className="py-2.5 font-mono text-slate-200">
+                    <button
+                      type="button"
+                      onClick={() => onSelectAccount(p.account_id)}
+                      className="hover:text-blue-400 hover:underline"
+                    >
+                      {p.account_id}
+                    </button>
+                  </td>
+                  <td className="py-2.5 text-slate-300 font-medium">
+                    {(p.risk_type || p.prediction_type || 'RISK_SIGNAL').replace(/_/g, ' ')}
+                  </td>
+                  <td className="py-2.5 font-mono text-slate-300">
+                    {Math.round(p.confidence * 100)}%
+                  </td>
+                  <td className="py-2.5 font-mono text-slate-300">
+                    {p.outcome || 'PENDING'}
+                  </td>
+                  <td className="py-2.5">
+                    {p.actual_outcome_match === true ? (
+                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                        MATCH (ACCURATE)
+                      </span>
+                    ) : p.actual_outcome_match === false ? (
+                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/30">
+                        MISMATCH
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                        AWAITING VERIFICATION
+                      </span>
+                    )}
+                  </td>
+                  <td className="py-2.5 text-right">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenVerifyModal(p)}
+                      className="text-xs text-blue-400 hover:text-blue-300 font-medium"
+                    >
+                      Audit
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -321,101 +331,103 @@ export const SelfAuditPage: React.FC<SelfAuditPageProps> = ({ onSelectAccount })
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
         >
-          <div className="bg-slate-900 border border-slate-700 rounded-xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                <h3 className="font-semibold text-sm text-white">
-                  Record Prediction Outcome
+          <div className="w-full max-w-lg bg-[#111726] border border-slate-800 rounded-md p-5 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div>
+                <h3 className="font-semibold text-sm text-slate-100 flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-blue-400" />
+                  <span>Record Actual Prediction Outcome</span>
                 </h3>
+                <p className="text-[11px] text-slate-400 mt-0.5">
+                  Update calibration ledger with verified ground-truth results.
+                </p>
               </div>
               <button
                 type="button"
                 onClick={() => setIsRecordModalOpen(false)}
-                className="text-slate-400 hover:text-white"
+                className="p-1 text-slate-400 hover:text-white rounded"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmitOutcome} className="space-y-3.5 text-xs">
+            <form onSubmit={handleSubmitOutcome} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-400 text-[11px] mb-1 font-medium">
-                  Select Prediction Target
+                <label className="block text-[11px] font-medium text-slate-300 mb-1">
+                  Target Prediction Record
                 </label>
                 <select
                   value={selectedPredictionId}
                   onChange={(e) => setSelectedPredictionId(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-emerald-500"
+                  className="w-full p-2 bg-slate-900 border border-slate-800 rounded text-xs text-slate-200 focus:outline-none focus:border-slate-600 font-mono"
                 >
                   {audit.recent_audits.map((p) => (
                     <option key={p.id} value={p.id}>
-                      {p.account_id} — {p.risk_type} ({Math.round(p.confidence * 100)}% conf)
+                      {p.account_id} — {p.risk_type || p.prediction_type} ({Math.round(p.confidence * 100)}% conf)
                     </option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <label className="block text-slate-400 text-[11px] mb-1 font-medium">
+                <label className="block text-[11px] font-medium text-slate-300 mb-1">
                   Verified Real-World Outcome
                 </label>
                 <select
                   value={actualOutcome}
                   onChange={(e) => setActualOutcome(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-emerald-500 font-semibold"
+                  className="w-full p-2 bg-slate-900 border border-slate-800 rounded text-xs text-slate-200 focus:outline-none focus:border-slate-600"
                 >
-                  <option value="PREVENTED">PREVENTED — Intervention averted deal loss/churn</option>
-                  <option value="CONFIRMED_CHURN">CONFIRMED_CHURN — Account churned as predicted</option>
-                  <option value="LOST">LOST — Opportunity lost due to stalled decision</option>
-                  <option value="RENEWED">RENEWED — Contract successfully renewed</option>
-                  <option value="FALSE_POSITIVE">FALSE_POSITIVE — Predicted risk did not materialize</option>
+                  <option value="PREVENTED">PREVENTED (Intervention Successful)</option>
+                  <option value="CHURNED">CHURNED (Account Lost)</option>
+                  <option value="EXPANDED">EXPANDED (Platform Deal Closed)</option>
+                  <option value="FALSE_ALARM">FALSE ALARM (Risk Did Not Materialize)</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-slate-400 text-[11px] mb-1 font-medium">
+                <label className="block text-[11px] font-medium text-slate-300 mb-1">
                   Verification Source
                 </label>
                 <input
                   type="text"
                   value={verificationSource}
                   onChange={(e) => setVerificationSource(e.target.value)}
-                  placeholder="e.g. CRM Closed-Won Telemetry, Executive Review"
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100 placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-500"
+                  placeholder="e.g., Executive Business Review, Finance Invoice"
+                  className="w-full p-2 bg-slate-900 border border-slate-800 rounded text-xs text-slate-200 focus:outline-none focus:border-slate-600"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-400 text-[11px] mb-1 font-medium">
-                  Audit Notes &amp; Evidence
+                <label className="block text-[11px] font-medium text-slate-300 mb-1">
+                  Auditor Notes &amp; Evidence
                 </label>
                 <textarea
-                  rows={3}
+                  rows={2}
                   value={auditNotes}
                   onChange={(e) => setAuditNotes(e.target.value)}
-                  placeholder="Document notes regarding actual customer outcome..."
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100 placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-500 resize-none"
+                  placeholder="Document why outcome occurred..."
+                  className="w-full p-2 bg-slate-900 border border-slate-800 rounded text-xs text-slate-200 focus:outline-none focus:border-slate-600"
                 />
               </div>
 
-              <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2 text-xs">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={() => setIsRecordModalOpen(false)}
-                  className="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium"
+                  className="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold flex items-center gap-1.5 transition-colors disabled:opacity-50"
+                  className="px-3 py-1.5 rounded bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium inline-flex items-center gap-1.5 disabled:opacity-50"
                 >
                   <Check className="w-3.5 h-3.5" />
-                  <span>{isSubmitting ? 'Recording...' : 'Save & Calibrate'}</span>
+                  <span>Save Outcome Record</span>
                 </button>
               </div>
             </form>

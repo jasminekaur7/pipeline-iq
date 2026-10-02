@@ -3,28 +3,39 @@
 @layer base {
   :root {
     color-scheme: dark;
+    --bg-base: #0B0F17;
+    --bg-surface: #111726;
+    --bg-elevated: #161F33;
+    --border-subtle: #1E293B;
+    --border-muted: #334155;
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --accent: #3B82F6;
   }
   
   html, body {
-    background-color: #090D16;
+    background-color: #0B0F17;
     color: #F8FAFC;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-/* Custom sleek scrollbar */
+/* Custom crisp enterprise scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #090D16;
+  background: #0B0F17;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 9999px;
+  background: #1E293B;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #334155;
